@@ -25,6 +25,8 @@ The agent should follow these steps for every request:
     - Build the `choices` sheet with integer values.
     - Configure the `settings` sheet (form_id, version).
 5. **Self-Correction**: Review the generated form against the `technical_reference.md` to ensure no invalid functions are used.
+6. **QA Validation**: Use `PyXComparer` to compare the new version against previous iterations to ensure no accidental variable name shifts or logic regressions.
+7. **Deployment**: Use `pyODKmcp` to programmatically push the validated form to ODK Central.
 
 ## 3. Debugging Framework
 When the user reports a "broken form," the agent should:
