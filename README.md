@@ -1,38 +1,43 @@
-# ODK Design System & AI Framework
+# ODK Form Skills for AI Agents
 
-This repository provides a professional framework for the end-to-end lifecycle of ODK (Open Data Kit) survey instruments. It is designed to bridge the gap between natural language survey requirements, production-ready XLSForms, and AI-powered data analysis.
+This repository is a specialized knowledge base and operational framework designed to empower AI agents—such as **Claude Code, Open Claw, Nanobot, and Open Code**—to act as professional ODK (Open Data Kit) XLSForm Programmers and Data Analysts.
+
+It transforms the complex process of survey design, validation, and deployment into a set of machine-readable skills, allowing AI agents to bridge the gap between natural language requirements and production-ready, analysis-optimized survey instruments.
 
 ## 🎯 Purpose
-The goal of this project is to ensure that ODK forms are:
-1. **Standardized**: Following strict naming and logic conventions.
+The goal of this project is to provide AI agents with the "cognitive tools" to ensure ODK forms are:
+1. **Standardized**: Following strict naming and logic conventions that prevent data corruption.
 2. **Analysis-Ready**: Optimized for seamless data cleaning and analysis in **Python (Pandas)** and **SAS**.
-3. **AI-Agentic**: Structured so that AI assistants can program, validate, deploy, and analyze surveys with minimal human intervention.
+3. **Fully Agentic**: Structured so that AI assistants can program, validate, deploy, and analyze surveys with minimal human intervention.
 
-## 🛠️ The End-to-End Workflow
-This framework implements a complete loop from design to insight:
+## 🛠️ The End-to-End AI Workflow
+This framework implements a complete loop from design to insight, specifically tailored for agentic execution:
 
 ### 1. Design $\rightarrow$ `ODK-Form-Skills`
-- **Master Programmer**: Use the AI implementation guide in `skills.md` to generate forms.
-- **Conventions**: Adhere to `conventions/conventions.md` for `snake_case` naming and standardized special values (`-88`, `-89`, `-90`).
-- **Modules**: Leverage `modules/modules.md` for reusable blocks like Informed Consent and Household Rosters.
+- **Agent Persona**: AI agents should initialize using the "Master Programmer" persona in `skills.md`.
+- **Conventions**: Agents must adhere to `conventions/conventions.md` for `snake_case` naming and standardized special values (`-88`, `-89`, `-90`).
+- **Modules**: Agents can inject production-ready blocks from `modules/modules.md` (e.g., Informed Consent, Household Rosters).
 
 ### 2. Validate $\rightarrow$ `PyXComparer`
-- **QA Gate**: Use [PyXComparer](https://github.com/joybindroo/PyXComparer) to detect breaking changes between form versions.
-- **Audit**: Ensure variable names haven't shifted, preventing breaks in downstream analysis scripts.
+- **Automated QA**: Agents use [PyXComparer](https://github.com/joybindroo/PyXComparer) to detect breaking changes between form versions.
+- **Regression Testing**: Ensure variable names haven't shifted, preventing breaks in downstream analysis scripts.
 
 ### 3. Deploy $\rightarrow$ `ODK Central`
-- **Automation**: Use `pyODKmcp` or the ODK Central API to programmatically push validated forms to the server.
+- **Programmatic Push**: Agents use `pyODKmcp` or the ODK Central API to deploy validated forms without manual uploads.
 
 ### 4. Analyze $\rightarrow$ `pyODKmcp` + `pyMCP`
-- **Ingestion**: Use the `pyODKmcp` MCP server to fetch submission data and store it in a local SQLite database.
-- **Insight**: Use a Database MCP server (like `pyMCP`) to perform natural language SQL queries on the collected data.
+- **Data Ingestion**: Agents use the `pyODKmcp` MCP server to fetch submission data into a local SQLite database.
+- **Natural Language Querying**: Agents transition to a Database MCP server (like `pyMCP`) to perform complex SQL analysis via natural language.
 
 ## 📂 Repository Structure
-- `/conventions`: House style and naming standards.
-- `/modules`: Reusable XLSForm building blocks.
-- `/references`: Technical ODK syntax and logic patterns.
+- `/conventions`: House style and naming standards for AI consistency.
+- `/modules`: Reusable XLSForm building blocks for rapid agent generation.
+- `/references`: Technical ODK syntax and logic patterns for AI reference.
 - `/tooling`: Documentation for the software ecosystem (`PyXComparer`, `pyODKmcp`).
-- `skills.md`: System prompts and workflows for AI agents.
+- `skills.md`: The core system prompts and operational workflows for AI agents.
 
 ## 🚀 Getting Started for AI Agents
-To turn an AI into a Master ODK Programmer, initialize it with the persona and workflow defined in [`skills.md`](./skills.md).
+To activate these skills, an AI agent should:
+1. Read `skills.md` to adopt the **Master ODK Programmer** persona.
+2. Reference `conventions/conventions.md` and `references/technical_reference.md` during the construction phase.
+3. Follow the **Workflow for Form Generation** to ensure a production-ready output.
