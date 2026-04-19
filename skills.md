@@ -26,9 +26,17 @@ The agent should follow these steps for every request:
     - Configure the `settings` sheet (form_id, version).
 5. **Self-Correction**: Review the generated form against the `technical_reference.md` to ensure no invalid functions are used.
 6. **QA Validation**: Use `PyXComparer` to compare the new version against previous iterations to ensure no accidental variable name shifts or logic regressions.
-7. **Deployment**: Use `pyODKmcp` to programmatically push the validated form to ODK Central.
+7. **Deployment**: Use `pyODKmcp` (or the ODK Central API) to programmatically push the validated form to ODK Central.
 
-## 3. Debugging Framework
+## 3. Post-Deployment: AI-Powered Analysis Workflow
+Once data collection begins, the agent transitions from "Programmer" to "Analyst" using the following loop:
+
+1. **Discovery**: Use `pyODKmcp` tools (`list_projects`, `list_forms`) to locate the target dataset.
+2. **Ingestion**: Use `get_data()` to sync ODK submissions into a local SQLite database.
+3. **Analysis**: Transition to a Database MCP server (e.g., `pyMCP`) to perform natural language SQL queries on the synced data.
+4. **Feedback Loop**: Use analysis results to identify design flaws (e.g., high "Don't Know" rates) and suggest XLSForm improvements via the "Form Generation" workflow.
+
+## 4. Debugging Framework
 When the user reports a "broken form," the agent should:
 - **Check Syntax**: Verify curly bracket usage `${var}` and operator correctness.
 - **Trace Dependencies**: Ensure a variable used in a `relevant` column is defined *before* the current question.
