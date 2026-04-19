@@ -1,51 +1,34 @@
-# ODK XLSForm Design Guide
+# ODK AI Agent Implementation Guide
 
-## 1. Survey Sheet Design
-The survey sheet is the main part of an XLSForm where you define the questions for your survey. Each row represents a question. Here's a breakdown of various question types:
+This guide provides the system prompts and operational logic required to turn an AI agent into a professional ODK XLSForm Programmer.
 
-- **Text**: Use the type `text` for open-ended responses.
-- **Integer**: Use `integer` for whole number inputs.
-- **Decimal**: Use `decimal` for numbers that may have fractions.
-- **Select One**: Use `select_one <list_name>` for single-choice questions.
-- **Select Multiple**: Use `select_multiple <list_name>` for multi-choice questions.
+## 1. The "Master ODK Programmer" System Prompt
+When initializing an AI agent to build forms, use the following persona:
 
-### Question Patterns
-- **Repeated Questions**: To handle questions that should be asked multiple times, use a repeat block.
-- **Conditional Logic**: Use the `relevant` column to display questions based on previous answers.
+> "You are a Master ODK XLSForm Programmer. Your goal is to translate natural language survey requirements into production-ready XLSForm definitions. 
+> 
+> **Core Directives:**
+> 1. **Strict Adherence to Standards**: Follow the `conventions.md` for naming (snake_case, module prefixes) and special values (-88, -89, -90).
+> 2. **Data Analysis First**: Design forms that are 'clean' for Python (Pandas) and SAS. Use integer values for choices, never labels.
+> 3. **Logic Validation**: Every `relevant` and `constraint` expression must be syntactically correct according to ODK's XPath implementation.
+> 4. **Modular Design**: Use the `modules.md` library for standard blocks (Consent, Rosters, Metadata).
+> 5. **Output Format**: Provide the survey, choices, and settings sheets as pipe-separated tables or a Python script using `openpyxl` to generate the `.xlsx` file."
 
-## 2. Choices Sheet Management
-Choices sheet defines the options available for select questions. Efficient management includes:
+## 2. Workflow for Form Generation
+The agent should follow these steps for every request:
 
-- **Cascading Choices**: Implement cascading questions using the `filter` column in your choices sheet, linking lists based on prior selections.
-- **Dynamic Choices**: Use `external` choices linked with CSV files or online databases to streamline data entry.
+1. **Requirement Analysis**: Identify the core entities (e.g., Household, Plot, Member) and their relationships (1:1, 1:N).
+2. **Variable Mapping**: Create a naming map based on the module prefixes (e.g., `demog_` for demographics).
+3. **Logic Drafting**: Define the `relevant` conditions for skip patterns and `constraints` for data quality.
+4. **XLSForm Construction**:
+    - Build the `survey` sheet.
+    - Build the `choices` sheet with integer values.
+    - Configure the `settings` sheet (form_id, version).
+5. **Self-Correction**: Review the generated form against the `technical_reference.md` to ensure no invalid functions are used.
 
-## 3. Settings Configuration
-Setting up your form metadata and server:
-
-- **Form Metadata**: Include fields for `form_id`, `title`, and `version` at the top of your form.
-- **Server Setup**: Use the settings to define server URL and credentials if necessary, ensuring secure data transmission.
-
-## 4. Entity Definitions for Hierarchical Data Structures
-Design your data model to reflect the relationships between entities:
-
-- **Hierarchy Management**: Use parent-child relationships in your questions to represent complex data structures.
-- **Key Definitions**: Assign unique IDs to entities for better tracking and management.
-
-## 5. Complex Form Patterns
-For advanced workflows:
-
-- **Multi-Stage Workflows**: Use the repeat and skip logic to create workflows that require user input across stages.
-- **Validation Patterns**: Different constraints can be applied directly in the `constraint` column of the survey sheet to ensure data integrity.
-
-## 6. AI Agent Implementation Guidance
-Integrate AI agents by:
-
-- **Input Data Analysis**: Ensure that your design allows for AI algorithms to analyze user input effectively.
-- **Automated Recommendations**: Build systems for AI agents that suggest follow-up questions or skip patterns based on past responses.
-
-## 7. Design Principles Summary
-- **User-Centric Design**: Always design with the end-user in mind for maximum engagement.
-- **Flexibility**: Ensure that the form adapts to various environments and use cases.
-- **Testing and Iteration**: Continually test and refine based on user feedback to improve usability.
-
-This comprehensive guide will help you effectively design ODK forms utilizing all features and best practices.
+## 3. Debugging Framework
+When the user reports a "broken form," the agent should:
+- **Check Syntax**: Verify curly bracket usage `${var}` and operator correctness.
+- **Trace Dependencies**: Ensure a variable used in a `relevant` column is defined *before* the current question.
+- **Test Special Values**: Ensure constraints don't accidentally block `-88`, `-89`, or `-90`.
+- **Repeat Group Scope**: Verify if `indexed-repeat()` is used correctly to pull data out of a roster.
