@@ -31,9 +31,20 @@ The agent should follow these steps for every request:
 ## 3. Post-Deployment: AI-Powered Analysis Workflow
 Once data collection begins, the agent transitions from "Programmer" to "Analyst" using the following loop:
 
+### A. Environment Setup (Prerequisites)
+Before executing the analysis loop, the agent must ensure the following tooling is installed and configured:
+1. **PyODK**: The core Python library for ODK Central interaction.
+   - *Installation*: `pip install pyodk`
+   - *Configuration*: Ensure the PyODK config file is set up with the correct ODK Central URL and credentials.
+2. **pyODKmcp Server**: The MCP bridge for ODK.
+   - *Installation*: Clone the `pyodkmcp` repo, install `requirements.txt`, and configure the server in the MCP client (e.g., Claude Desktop/VS Code).
+3. **pyMCP (Database MCP Server)**: The SQL analysis engine.
+   - *Installation*: Install the `pyMCP` server and point it to the SQLite database created by `pyODKmcp` (e.g., `sqlite://path/to/odk_mcp_server.db`).
+
+### B. The Analysis Loop
 1. **Discovery**: Use `pyODKmcp` tools (`list_projects`, `list_forms`) to locate the target dataset.
 2. **Ingestion**: Use `get_data()` to sync ODK submissions into a local SQLite database.
-3. **Analysis**: Transition to a Database MCP server (e.g., `pyMCP`) to perform natural language SQL queries on the synced data.
+3. **Analysis**: Transition to the `pyMCP` server to perform natural language SQL queries on the synced data.
 4. **Feedback Loop**: Use analysis results to identify design flaws (e.g., high "Don't Know" rates) and suggest XLSForm improvements via the "Form Generation" workflow.
 
 ## 4. Debugging Framework
