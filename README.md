@@ -38,6 +38,7 @@ This framework implements a complete loop from design to insight, specifically t
 - **Agent Persona**: AI agents should initialize using the "Master Programmer" persona in `skills.md`.
 - **Conventions**: Agents must adhere to `conventions/conventions.md` for `snake_case` naming and standardized special values (`-88`, `-89`, `-90`).
 - **Modules**: Agents can inject production-ready blocks from `modules/modules.md` (e.g., Informed Consent, Household Rosters).
+- **File Generation**: Agents use `src/xlsform_generator.py` and `templates/odk_template.xlsx` to produce valid `.xlsx` files.
 
 ### 2. Validate $\rightarrow$ `PyXComparer`
 - **Automated QA**: Agents use [PyXComparer](https://github.com/joybindroo/PyXComparer) to detect breaking changes between form versions.
@@ -54,6 +55,8 @@ This framework implements a complete loop from design to insight, specifically t
 - `/conventions`: House style and naming standards for AI consistency.
 - `/modules`: Reusable XLSForm building blocks for rapid agent generation.
 - `/references`: Technical ODK syntax and logic patterns for AI reference.
+- `/src`: Python scripts for automated XLSForm generation.
+- `/templates`: Standardized ODK Excel templates.
 - `/tooling`: Documentation for the software ecosystem (`PyXComparer`, `pyODKmcp`).
 - `skills.md`: The core system prompts and operational workflows for AI agents.
 
@@ -61,4 +64,5 @@ This framework implements a complete loop from design to insight, specifically t
 To activate these skills, an AI agent should:
 1. Read `skills.md` to adopt the **Master ODK Programmer** persona.
 2. Reference `conventions/conventions.md` and `references/technical_reference.md` during the construction phase.
-3. Follow the **Workflow for Form Generation** to ensure a production-ready output.
+3. Use `src/xlsform_generator.py` to output the final form.
+4. Follow the **Workflow for Form Generation** to ensure a production-ready output.
