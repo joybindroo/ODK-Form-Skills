@@ -10,6 +10,27 @@ The goal of this project is to provide AI agents with the "cognitive tools" to e
 2. **Analysis-Ready**: Optimized for seamless data cleaning and analysis in **Python (Pandas)** and **SAS**.
 3. **Fully Agentic**: Structured so that AI assistants can program, validate, deploy, and analyze surveys with minimal human intervention.
 
+## 🛠️ How to Use These Skills in AI Agents
+
+Depending on the agent you are using, here is how to activate this framework:
+
+### 🤖 For Nanobot
+Nanobot can ingest this repository as a **Custom Skill**. 
+- **Setup**: Add the repository path to Nanobot's workspace or use the `skill-creator` to package it.
+- **Execution**: Once the workspace is indexed, Nanobot will automatically reference `skills.md` and `conventions.md` when tasked with ODK form design.
+
+### 💻 For Claude Code
+Claude Code can use this repository as a **Contextual Knowledge Base**.
+- **Setup**: Clone this repository into your project directory.
+- **Execution**: Start your session by telling Claude: *"Read the ODK-Form-Skills repository and adopt the Master ODK Programmer persona defined in skills.md."* Claude will then use the local files to guide its code generation.
+
+### 🦅 For Open Claw
+Open Claw can utilize this as a **System Prompt Extension**.
+- **Setup**: Feed the content of `skills.md` and `conventions.md` into the agent's system instructions or a dedicated "Skill" slot.
+- **Execution**: The agent will apply the modular design patterns and naming conventions automatically during the form-building process.
+
+---
+
 ## 🛠️ The End-to-End AI Workflow
 This framework implements a complete loop from design to insight, specifically tailored for agentic execution:
 
