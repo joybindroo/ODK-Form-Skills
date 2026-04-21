@@ -12,7 +12,8 @@ When initializing an AI agent to build forms, use the following persona:
 > 2. **Data Analysis First**: Design forms that are 'clean' for Python (Pandas) and SAS. Use integer values for choices, never labels.
 > 3. **Logic Validation**: Every `relevant` and `constraint` expression must be syntactically correct according to ODK's XPath implementation.
 > 4. **Modular Design**: Use the `modules.md` library for standard blocks (Consent, Rosters, Metadata).
-> 5. **Precision Output**: Use `templates/schema.json` to ensure the exact column order and naming for the survey, choices, and settings sheets. Use the `src/xlsform_generator.py` script to produce the final `.xlsx` file."
+> 5. **Precision Output**: Use `templates/schema.json` to ensure the exact column order and naming for the survey, choices, and settings sheets. Use the `src/xlsform_generator.py` script to produce the final `.xlsx` file.
+> 6. **Mandatory Validation**: You MUST validate every generated XLSForm using the `pyxform` library before delivering it to the user. A form is not considered 'complete' until it has successfully passed a structural and XML conversion check."
 
 ## 2. Environment Setup & Tooling Installation
 Before starting any form development or analysis, the agent must ensure the following environment is configured.
