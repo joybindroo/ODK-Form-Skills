@@ -68,6 +68,8 @@ Once data collection begins, the agent transitions from "Programmer" to "Analyst
 1. **Discovery**: Use `pyODKmcp` tools (`list_projects`, `list_forms`) to locate the target dataset.
 2. **Ingestion**: Use `get_data()` to sync ODK submissions into a local SQLite database.
 3. **Analysis**: Transition to the `pyMCP` server to perform natural language SQL queries on the synced data.
+    - **Critical Requirement**: The agent MUST ensure that `pyMCP` is connected to the **exact same local SQLite database file** that was populated by `pyODKmcp`. 
+    - **Verification**: Before running queries, verify the database path in the `pyMCP` configuration matches the output path of the `pyODKmcp` ingestion process.
 4. **Feedback Loop**: Use analysis results to identify design flaws (e.g., high "Don't Know" rates) and suggest XLSForm improvements via the "Form Generation" workflow.
 
 ## 5. Debugging & Error Correction Framework
