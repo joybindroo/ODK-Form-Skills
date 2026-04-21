@@ -2,100 +2,102 @@ import pandas as pd
 import openpyxl
 from openpyxl import load_workbook
 import os
+import json
+
+def extract_template_metadata(template_path):
+    """
+    Extracts the column structures (headers) from the template to provide 
+    the AI agent with a precise schema for form creation.
+    """
+    if not os.path.exists(template_path):
+        return None
+    
+    wb = load_workbook(template_path, data_only=True)
+    metadata = {}
+    
+    target_sheets = ['survey', 'choices', 'settings', 'entities']
+    for sheet in target_sheets:
+        if sheet in wb.sheetnames:
+            ws = wb[sheet]
+            # Get the first row (headers)
+            headers = [cell.value for cell in next(ws.iter_rows(min_row=1, max_row=1, values_only=True))[0]]
+            metadata[sheet] = headers
+            
+    return metadata
 
 def generate_xlsform(output_path, survey_data, choices_data, settings_data, template_path=None):
     """
     Generates an ODK XLSForm .xlsx file.
     
-    :param output_path: Path where the final .xlsx will be saved.
-    :param survey_data: List of lists or DataFrame for the 'survey' sheet.
-    :param choices_data: List of lists or DataFrame for the 'choices' sheet.
-    :param settings_data: Dictionary for the 'settings' sheet.
-    :param template_path: Path to an existing .xlsx template to preserve formatting.
+    Instead of deleting sheets, this version creates a clean file based on 
+    the extracted schema or a fresh workbook, ensuring no template data 
+    leaks into the final form.
     """
     
-    # Create DataFrames
-    df_survey = pd.DataFrame(survey_data)
-    df_choices = pd.DataFrame(choices_data)
+    # 1. Handle the Workbook
+    # We create a new workbook to ensure zero contamination from template data.
+    # If a template is provided, we only use it to copy the 'reference' sheets.
+    wb = openpyxl.Workbook()
     
-    # Settings are usually a single row with headers
-    df_settings = pd.DataFrame([settings_data])
+    # Remove the default sheet created by openpyxl
+    default_sheet = wb.active
+    wb.remove(default_sheet)
 
+    # 2. Copy Reference Sheets from Template (if available)
     if template_path and os.path.exists(template_path):
-        # Load template to preserve other sheets (like '👋 Start here', '⚙️ Types', etc.)
-        wb = load_workbook(template_path)
-        
-        # Update/Create Survey sheet
-        if 'survey' in wb.sheetnames:
-            std = wb['survey']
-            wb.remove(std)
-        wb.create_sheet('survey', 0)
-        ws_survey = wb['survey']
-        
-        # Write Survey Data
-        for r_idx, row in enumerate(df_survey.values.tolist(), 1):
-            for c_idx, value in enumerate(row, 1):
-                ws_survey.cell(row=r_idx, column=c_idx, value=value)
-        
-        # Update/Create Choices sheet
-        if 'choices' in wb.sheetnames:
-            std = wb['choices']
-            wb.remove(std)
-        wb.create_sheet('choices', 1)
-        ws_choices = wb['choices']
-        for r_idx, row in enumerate(df_choices.values.tolist(), 1):
-            for c_idx, value in enumerate(row, 1):
-                ws_choices.cell(row=r_idx, column=c_idx, value=value)
-                
-        # Update/Create Settings sheet
-        if 'settings' in wb.sheetnames:
-            std = wb['settings']
-            wb.remove(std)
-        wb.create_sheet('settings', 2)
-        ws_settings = wb['settings']
-        
-        # Write Settings Headers
-        headers = list(settings_data.keys())
-        for c_idx, header in enumerate(headers, 1):
-            ws_settings.cell(row=1, column=c_idx, value=header)
-        # Write Settings Values
-        for c_idx, value in enumerate(settings_data.values(), 1):
-            ws_settings.cell(row=2, column=c_idx, value=value)
-            
-        wb.save(output_path)
-    else:
-        # Fallback: Create from scratch using Pandas ExcelWriter
-        with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
-            df_survey.to_excel(writer, sheet_name='survey', index=False)
-            df_choices.to_excel(writer, sheet_name='choices', index=False)
-            df_settings.to_excel(writer, sheet_name='settings', index=False)
+        template_wb = load_workbook(template_path, data_only=True)
+        # Only copy sheets that are NOT the data sheets
+        data_sheets = {'survey', 'choices', 'settings', 'entities'}
+        for sheet_name in template_wb.sheetnames:
+            if sheet_name not in data_sheets:
+                # Create a new sheet in our target wb and copy values
+                ws_new = wb.create_sheet(sheet_name)
+                ws_old = template_wb[sheet_name]
+                for row in ws_old.iter_rows(values_only=True):
+                    ws_new.append(row)
+
+    # 3. Write Survey Data
+    ws_survey = wb.create_sheet('survey', 0)
+    for row in survey_data:
+        ws_survey.append(row)
+
+    # 4. Write Choices Data
+    ws_choices = wb.create_sheet('choices', 1)
+    for row in choices_data:
+        ws_choices.append(row)
+
+    # 5. Write Settings Data
+    ws_settings = wb.create_sheet('settings', 2)
+    # Headers
+    headers = list(settings_data.keys())
+    ws_settings.append(headers)
+    # Values
+    ws_settings.append(list(settings_data.values()))
+
+    wb.save(output_path)
 
 if __name__ == "__main__":
-    # Example usage for AI Agents
-    survey_cols = ['type', 'name', 'label', 'hint', 'required', 'relevant', 'appearance', 'default', 'constraint', 'constraint_message', 'calculation', 'trigger', 'choice_filter', 'parameters', 'repeat_count', 'note', 'image', 'audio', 'video']
-    survey_rows = [
-        ['text', 'respondent_name', 'What is your name?', '', 'yes', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-        ['select_one gender', 'gender', 'Gender', '', 'yes', '', 'horizontal', '', '', '', '', '', '', '', '', '', '', '', ''],
-    ]
+    # Example usage
+    template = "templates/odk_template.xlsx"
     
-    choices_cols = ['list_name', 'name', 'label']
-    choices_rows = [
-        ['gender', '1', 'Male'],
-        ['gender', '2', 'Female'],
-        ['gender', '3', 'Other'],
-    ]
+    # Extract schema for AI precision
+    schema = extract_template_metadata(template)
+    print("Extracted Schema for AI Agent:")
+    print(json.dumps(schema, indent=2))
     
-    settings = {
-        'form_title': 'Test Form',
-        'form_id': 'test_form_v1',
-        'version': '20260421',
-        'instance_name': 'test_v1'
-    }
+    survey_cols = schema['survey'] if schema else ['type', 'name', 'label']
+    survey_rows = [['text', 'name', 'What is your name?']]
+    
+    choices_cols = schema['choices'] if schema else ['list_name', 'name', 'label']
+    choices_rows = [['gender', '1', 'Male'], ['gender', '2', 'Female']]
+    
+    settings = {'form_title': 'Test Form', 'form_id': 'test_v1', 'version': '1'}
     
     generate_xlsform(
         'test_output.xlsx', 
         [survey_cols] + survey_rows, 
         [choices_cols] + choices_rows, 
-        settings
+        settings,
+        template_path=template
     )
-    print("XLSForm generated successfully.")
+    print("\nClean XLSForm generated successfully.")

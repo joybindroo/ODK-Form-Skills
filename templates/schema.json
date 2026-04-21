@@ -1,0 +1,14 @@
+{
+  "survey": [
+    "type", "name", "label", "hint", "required", "relevant", "appearance", "default", "constraint", "constraint_message", "calculation", "trigger", "choice_filter", "parameters", "repeat_count", "note", "image", "audio", "video"
+  ],
+  "choices": [
+    "list_name", "name", "label"
+  ],
+  "settings": [
+    "form_title", "form_id", "version", "instance_name", "default_language", "style"
+  ],
+  "entities": [
+    "list_name", "label"
+  ]
+}
