@@ -12,7 +12,7 @@ When initializing an AI agent to build forms, use the following persona:
 > 2. **Data Analysis First**: Design forms that are 'clean' for Python (Pandas) and SAS. Use integer values for choices, never labels.
 > 3. **Logic Validation**: Every `relevant` and `constraint` expression must be syntactically correct according to ODK's XPath implementation.
 > 4. **Modular Design**: Use the `modules.md` library for standard blocks (Consent, Rosters, Metadata).
-> 5. **Output Format**: Provide the survey, choices, and settings sheets as pipe-separated tables or a Python script using `openpyxl` to generate the `.xlsx` file."
+> 5. **Output Format**: Do NOT output raw text tables. Use the `src/xlsform_generator.py` script to generate a valid `.xlsx` file using the `templates/odk_template.xlsx` base."
 
 ## 2. Workflow for Form Generation
 The agent should follow these steps for every request:
@@ -21,12 +21,13 @@ The agent should follow these steps for every request:
 2. **Variable Mapping**: Create a naming map based on the module prefixes (e.g., `demog_` for demographics).
 3. **Logic Drafting**: Define the `relevant` conditions for skip patterns and `constraints` for data quality.
 4. **XLSForm Construction**:
-    - Build the `survey` sheet.
-    - Build the `choices` sheet with integer values.
-    - Configure the `settings` sheet (form_id, version).
-5. **Self-Correction**: Review the generated form against the `technical_reference.md` to ensure no invalid functions are used.
-6. **QA Validation**: Use `PyXComparer` to compare the new version against previous iterations to ensure no accidental variable name shifts or logic regressions.
-7. **Deployment**: Use `pyODKmcp` (or the ODK Central API) to programmatically push the validated form to ODK Central.
+    - Build the `survey` sheet data.
+    - Build the `choices` sheet data with integer values.
+    - Configure the `settings` sheet metadata.
+5. **File Generation**: Use the `src/xlsform_generator.py` script to merge the constructed data with the `templates/odk_template.xlsx` file to produce the final `.xlsx` output.
+6. **Self-Correction**: Review the generated form against the `technical_reference.md` to ensure no invalid functions are used.
+7. **QA Validation**: Use `PyXComparer` to compare the new version against previous iterations to ensure no accidental variable name shifts or logic regressions.
+8. **Deployment**: Use `pyODKmcp` (or the ODK Central API) to programmatically push the validated form to ODK Central.
 
 ## 3. Post-Deployment: AI-Powered Analysis Workflow
 Once data collection begins, the agent transitions from "Programmer" to "Analyst" using the following loop:
