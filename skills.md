@@ -14,7 +14,34 @@ When initializing an AI agent to build forms, use the following persona:
 > 4. **Modular Design**: Use the `modules.md` library for standard blocks (Consent, Rosters, Metadata).
 > 5. **Output Format**: Do NOT output raw text tables. Use the `src/xlsform_generator.py` script to generate a valid `.xlsx` file using the `templates/odk_template.xlsx` base."
 
-## 2. Workflow for Form Generation
+## 2. Environment Setup & Tooling Installation
+Before starting any form development or analysis, the agent must ensure the following environment is configured.
+
+### A. Local Development Environment (Virtual Env)
+To avoid dependency conflicts, always use a Python virtual environment:
+1. **Create Venv**: `python3 -m venv venv`
+2. **Activate**: `source venv/bin/activate` (Linux/macOS) or `venv\Scripts\activate` (Windows)
+3. **Install Core Dependencies**: `pip install -r requirements.txt` (Installs pandas, openpyxl, pyxform, pyodk)
+
+### B. Specialized Tooling Installation
+The following tools are required for the full lifecycle:
+
+1. **PyXComparer (Version Auditing)**
+   - *Purpose*: Detects breaking changes between XLSForm versions.
+   - *Installation*: `pip install git+https://github.com/joybindroo/PyXComparer.git`
+
+2. **pyODKmcp (ODK Central MCP Bridge)**
+   - *Purpose*: Programmatic deployment and data retrieval.
+   - *Installation*: 
+     - Clone the repo: `git clone https://github.com/joybindroo/pyodkmcp.git`
+     - Install: `cd pyodkmcp && pip install -r requirements.txt`
+     - Configure: Set up the ODK Central credentials in the server config.
+
+3. **pyMCP (Database Analysis Engine)**
+   - *Purpose*: Natural language SQL queries on synced ODK data.
+   - *Installation*: Install the `pyMCP` server and point it to the SQLite database created by `pyODKmcp`.
+
+## 3. Workflow for Form Generation
 The agent should follow these steps for every request:
 
 1. **Requirement Analysis**: Identify the core entities (e.g., Household, Plot, Member) and their relationships (1:1, 1:N).
@@ -30,28 +57,19 @@ The agent should follow these steps for every request:
 8. **QA Validation**: Use `PyXComparer` to compare the new version against previous iterations to ensure no accidental variable name shifts or logic regressions.
 9. **Deployment**: Use `pyODKmcp` (or the ODK Central API) to programmatically push the validated form to ODK Central.
 
-## 3. Post-Deployment: AI-Powered Analysis Workflow
+## 4. Post-Deployment: AI-Powered Analysis Workflow
 Once data collection begins, the agent transitions from "Programmer" to "Analyst" using the following loop:
 
-### A. Environment Setup (Prerequisites)
-Before executing the analysis loop, the agent must ensure the following tooling is installed and configured:
-1. **PyODK**: The core Python library for ODK Central interaction.
-   - *Installation*: `pip install pyodk`
-   - *Configuration*: Ensure the PyODK config file is set up with the correct ODK Central URL and credentials.
-2. **pyODKmcp Server**: The MCP bridge for ODK.
-   - *Installation*: Clone the `pyodkmcp` repo, install `requirements.txt`, and configure the server in the MCP client (e.g., Claude Desktop/VS Code).
-3. **pyMCP (Database MCP Server)**: The SQL analysis engine.
-   - *Installation*: Install the `pyMCP` server and point it to the SQLite database created by `pyODKmcp` (e.g., `sqlite://path/to/odk_mcp_server.db`).
-
-### B. The Analysis Loop
+### A. The Analysis Loop
 1. **Discovery**: Use `pyODKmcp` tools (`list_projects`, `list_forms`) to locate the target dataset.
 2. **Ingestion**: Use `get_data()` to sync ODK submissions into a local SQLite database.
 3. **Analysis**: Transition to the `pyMCP` server to perform natural language SQL queries on the synced data.
 4. **Feedback Loop**: Use analysis results to identify design flaws (e.g., high "Don't Know" rates) and suggest XLSForm improvements via the "Form Generation" workflow.
 
-## 4. Debugging Framework
+## 5. Debugging Framework
 When the user reports a "broken form," the agent should:
 - **Check Syntax**: Verify curly bracket usage `${var}` and operator correctness.
 - **Trace Dependencies**: Ensure a variable used in a `relevant` column is defined *before* the current question.
 - **Test Special Values**: Ensure constraints don't accidentally block `-88`, `-89`, or `-90`.
 - **Repeat Group Scope**: Verify if `indexed-repeat()` is used correctly to pull data out of a roster.
+
