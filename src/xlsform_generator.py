@@ -28,51 +28,40 @@ def extract_template_metadata(template_path):
 def generate_xlsform(output_path, survey_data, choices_data, settings_data, template_path=None):
     """
     Generates an ODK XLSForm .xlsx file.
-    
-    Instead of deleting sheets, this version creates a clean file based on 
-    the extracted schema or a fresh workbook, ensuring no template data 
-    leaks into the final form.
+
+    This version ensures that ONLY the essential ODK sheets (survey, choices, settings, entities)
+    are present in the final output. Reference sheets from the template are explicitly excluded.
     """
-    
-    # 1. Handle the Workbook
-    # We create a new workbook to ensure zero contamination from template data.
-    # If a template is provided, we only use it to copy the 'reference' sheets.
+
+    # 1. Create a brand new workbook to ensure zero contamination
     wb = openpyxl.Workbook()
-    
+
     # Remove the default sheet created by openpyxl
     default_sheet = wb.active
     wb.remove(default_sheet)
 
-    # 2. Copy Reference Sheets from Template (if available)
-    if template_path and os.path.exists(template_path):
-        template_wb = load_workbook(template_path, data_only=True)
-        # Only copy sheets that are NOT the data sheets
-        data_sheets = {'survey', 'choices', 'settings', 'entities'}
-        for sheet_name in template_wb.sheetnames:
-            if sheet_name not in data_sheets:
-                # Create a new sheet in our target wb and copy values
-                ws_new = wb.create_sheet(sheet_name)
-                ws_old = template_wb[sheet_name]
-                for row in ws_old.iter_rows(values_only=True):
-                    ws_new.append(row)
-
-    # 3. Write Survey Data
+    # 2. Write Survey Data
     ws_survey = wb.create_sheet('survey', 0)
     for row in survey_data:
         ws_survey.append(row)
 
-    # 4. Write Choices Data
+    # 3. Write Choices Data
     ws_choices = wb.create_sheet('choices', 1)
     for row in choices_data:
         ws_choices.append(row)
 
-    # 5. Write Settings Data
+    # 4. Write Settings Data
     ws_settings = wb.create_sheet('settings', 2)
     # Headers
     headers = list(settings_data.keys())
     ws_settings.append(headers)
     # Values
     ws_settings.append(list(settings_data.values()))
+
+    # 5. Optional: Entities sheet (empty by default if not provided)
+    # We create it to maintain the requested 4-sheet structure if needed,
+    # or we can leave it out if no entity data is passed.
+    # For now, we'll only create it if the user specifically wants it.
 
     wb.save(output_path)
 
