@@ -83,7 +83,17 @@ If `pyxform` returns an error during the XML conversion step, the agent must:
     - **Type Mismatches**: Ensure the `type` column matches the expected ODK syntax (e.g., `select_one list_name` instead of just `select_one`).
 4. **Re-Validate**: Run the `pyxform` check again. **Do not proceed to PyXComparer or Deployment until `pyxform` returns a clean conversion.**
 
-### B. General Debugging Logic
+### B. Using `PyXComparer` for Regression Analysis
+When a form that previously passed validation now fails `pyxform` checks, the agent should use `PyXComparer` to isolate the breaking change:
+1. **Compare Versions**: Run `PyXComparer` between the current (broken) version and the last known working version.
+2. **Isolate Delta**: Identify exactly which rows, columns, or logic expressions were modified.
+3. **Analyze the Break**: Determine if the failure is due to:
+    - **New Syntax**: A newly added function or type that is unsupported.
+    - **Dependency Break**: A variable name change that broke a `relevant` or `constraint` expression elsewhere in the form.
+    - **Structural Shift**: An unclosed group or repeat that was introduced during the edit.
+4. **Revert or Fix**: Either revert the specific breaking change or apply the fix identified in the `pyxform` error log.
+
+### C. General Debugging Logic
 - **Trace Dependencies**: Ensure a variable used in a `relevant` column is defined *before* the current question.
 - **Test Special Values**: Ensure constraints don't accidentally block `-88`, `-89`, or `-90`.
 - **Repeat Group Scope**: Verify if `indexed-repeat()` is used correctly to pull data out of a roster.
