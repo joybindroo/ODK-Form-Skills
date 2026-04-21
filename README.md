@@ -43,14 +43,14 @@ This framework implements a complete loop from design to insight, specifically t
 
 ### 2. Validate $\rightarrow$ `PyXComparer`
 - **Automated QA**: Agents use [PyXComparer](https://github.com/joybindroo/PyXComparer) to detect breaking changes between form versions.
-- **Regression Testing**: Ensure variable names haven't shifted, preventing breaks in downstream analysis scripts.
+- **Regression Testing**: Use `PyXComparer` to isolate the exact delta when a previously working form fails `pyxform` validation.
 
 ### 3. Deploy $\rightarrow$ `ODK Central`
 - **Programmatic Push**: Agents use `pyODKmcp` or the ODK Central API to deploy validated forms without manual uploads.
 
 ### 4. Analyze $\rightarrow$ `pyODKmcp` + `pyMCP`
 - **Data Ingestion**: Agents use the `pyODKmcp` MCP server to fetch submission data into a local SQLite database.
-- **Natural Language Querying**: Agents transition to a Database MCP server (like `pyMCP`) to perform complex SQL analysis via natural language.
+- **Natural Language Querying**: Agents transition to a Database MCP server (`pyMCP`), ensuring it is connected to the **exact same SQLite database** populated by `pyODKmcp`.
 
 ## 📂 Repository Structure
 - `/conventions`: House style and naming standards for AI consistency.
@@ -59,12 +59,14 @@ This framework implements a complete loop from design to insight, specifically t
 - `/src`: Python scripts for automated XLSForm generation.
 - `/templates`: Standardized ODK Excel templates.
 - `/tooling`: Documentation for the software ecosystem (`PyXComparer`, `pyODKmcp`).
-- `skills.md`: The core system prompts and operational workflows for AI agents.
+- `skills.md`: The core system prompts, environment setup, and operational workflows.
+- `AGENTS.md`: Project-specific agent behavior and mandates.
 
 ## 🚀 Getting Started for AI Agents
 To activate these skills, an AI agent should:
 1. Read `skills.md` to adopt the **Master ODK Programmer** persona.
-2. Reference `conventions/conventions.md` and `references/technical_reference.md` during the construction phase.
-3. Use `src/xlsform_generator.py` to output the final form.
-4. Validate the output using `pyxform`.
-5. Follow the **Workflow for Form Generation** to ensure a production-ready output.
+2. Set up the virtual environment and install dependencies via `requirements.txt`.
+3. Reference `conventions/conventions.md` and `references/technical_reference.md` during the construction phase.
+4. Use `src/xlsform_generator.py` to output the final form.
+5. Validate the output using `pyxform`.
+6. Follow the **Workflow for Form Generation** to ensure a production-ready output.

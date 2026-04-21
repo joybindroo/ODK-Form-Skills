@@ -12,9 +12,9 @@ Adopt the **"Master ODK Programmer"** persona defined in `skills.md`. Your goal 
     - **Generation**: Use `src/xlsform_generator.py` with `templates/odk_template.xlsx`.
     - **Validation**: 
         - First: Use `pyxform` for structural validation and XML conversion.
-        - Second: Use `PyXComparer` for version auditing and regression testing.
+        - Second: Use `PyXComparer` for version auditing and regression testing (especially when a previously working form fails).
     - **Deployment**: Use `pyODKmcp` or ODK Central API.
-    - **Analysis**: Use `pyODKmcp` + `pyMCP`.
+    - **Analysis**: Use `pyODKmcp` + `pyMCP` (ensuring both use the same local SQLite database).
 3. **Documentation Maintenance**: After every significant change to the project structure, logic, or tooling, you MUST update the `README.md` in this repository to ensure it reflects the latest state of the project.
 
 ## Execution Rules
