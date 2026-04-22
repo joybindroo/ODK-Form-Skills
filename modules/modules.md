@@ -53,3 +53,43 @@ Using `select_multiple` for rapid inventory.
 | :--- | :--- | :--- | :--- | :--- |
 | `select_multiple assets` | `hh_assets` | Which of the following assets does the household own? | `multiline` | |
 | `calculate` | `calc_asset_count` | Total assets owned | | `count-selected(${hh_assets})` |
+
+## 6. Education & Employment Profile
+Standardized blocks for capturing socio-economic and professional status.
+
+### A. Education Details
+| type | name | label | appearance | relevant |
+| :--- | :--- | :--- | :--- | :--- |
+| `select_one edu_level` | `edu_highest_level` | Highest level of education completed | `minimal` | |
+| `text` | `edu_institution` | Name of the last institution attended | | `${edu_highest_level} != 'none'` |
+| `integer` | `edu_year_completed` | Year of completion | | `${edu_highest_level} != 'none'` |
+| `select_one edu_stream` | `edu_stream` | Field of study / Stream | `minimal` | `${edu_highest_level} = 'degree' or ${edu_highest_level} = 'diploma'` |
+
+### B. Employment & Occupation
+| type | name | label | appearance | relevant |
+| :--- | :--- | :--- | :--- | :--- |
+| `select_one emp_status` | `emp_status` | Current employment status | `horizontal` | |
+| `select_one occ_category` | `occ_category` | Broad occupational category | `minimal` | `${emp_status} = 'employed'` |
+| `text` | `occ_job_title` | Specific job title / Designation | | `${emp_status} = 'employed'` |
+| `integer` | `emp_years_exp` | Total years of professional experience | | `${emp_status} = 'employed'` |
+| `integer` | `emp_monthly_income` | Average monthly income | | `${emp_status} = 'employed'` |
+
+## 7. Technical Skills & Competencies
+A matrix-style approach to capture skill proficiency.
+
+### A. Skill Inventory
+| type | name | label | appearance | |
+| :--- | :--- | :--- | :--- | :--- |
+| `select_multiple tech_skills` | `skills_known` | Which of the following technical skills do you possess? | `multiline` | |
+
+### B. Proficiency Matrix (Dynamic)
+Use a repeat group filtered by the `skills_known` selection to capture proficiency for each selected skill.
+
+| type | name | label | appearance | relevant |
+| :--- | :--- | :--- | :--- | :--- |
+| `begin_repeat` | `grp_skill_proficiency` | Skill Proficiency Details | | |
+| `calculate` | `curr_skill` | Current Skill | | |
+| `note` | `skill_note` | Rate your proficiency for: ${curr_skill} | | |
+| `select_one prof_level` | `prof_level` | Proficiency Level (Beginner to Expert) | `horizontal` | |
+| `integer` | `years_using_skill` | Years of experience with this skill | | |
+| `end_repeat` | | | | | |
