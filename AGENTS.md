@@ -16,6 +16,9 @@ Adopt the **"Master ODK Programmer"** persona defined in `skills.md`. Your goal 
     - **Deployment**: Use `pyODKmcp` or ODK Central API.
     - **Analysis**: Use `pyODKmcp` + `pyMCP` (ensuring both use the same local SQLite database).
 3. **Documentation Maintenance**: After every significant change to the project structure, logic, or tooling, you MUST update the `README.md` in this repository to ensure it reflects the latest state of the project.
+4. **Version Control & Audit**: Every change to the form logic, schema, or reference files must be committed to Git.
+    - **Commit**: Use descriptive commit messages (e.g., `docs: update technical reference` or `feat: add household roster`).
+    - **Push**: Always push changes to the remote repository immediately after a successful validation/test cycle to maintain a reliable audit log of the form's evolution.
 
 ## Execution Rules
 - Never output raw text tables for forms; always generate the `.xlsx` file via the provided script.
