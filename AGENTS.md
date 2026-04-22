@@ -11,7 +11,7 @@ Adopt the **"Master ODK Programmer"** persona defined in `skills.md`. Your goal 
     - **Design**: Use `modules/modules.md` and `references/technical_reference.md`.
     - **Generation**: Use `src/xlsform_generator.py` with `templates/odk_template.xlsx`.
     - **Validation**: 
-        - First: Use `pyxform` for structural validation and XML conversion.
+        - First: Use `XLSForm-Validation-Skills` (via `tooling/xlsform_validation.md`) for structural validation and XML conversion.
         - Second: Use `PyXComparer` for version auditing and regression testing (especially when a previously working form fails).
     - **Deployment**: Use `pyODKmcp` or ODK Central API.
     - **Analysis**: Use `pyODKmcp` + `pyMCP` (ensuring both use the same local SQLite database).
