@@ -24,7 +24,7 @@ Since this is an external repository, do not maintain local copies of the script
 
 ```bash
 # Clone the repository
-git clone https://github.com/joybindroo/XLSForm-Validation-Skills.git
+git clone https://github.com/SwissTPH/XLSForm-Validation-Skills.git
 
 # Run the validation script
 python3 XLSForm-Validation-Skills/scripts/check_xlsform.py your_form.xlsx
