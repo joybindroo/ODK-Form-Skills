@@ -30,11 +30,22 @@ This library provides a quick-reference for ODK XLSForm syntax, operators, and l
 - `if(condition, true_val, false_val)` : Conditional logic.
 - `selected(list, choice)` : Checks if a specific choice is selected in a `select_multiple`.
 - `count()` : Counts number of selections in a `select_multiple`.
-- `indexed-repeat(name, index, repeat_group)` : Retrieves a value from a specific repeat instance.
-- `pulldata('csvname', 'column', 'key')` : Pulls data from an external CSV.
+- `indexed-repeat(name, index, repeat_group)` : Retrieves a value from a specific repeat instance. Use this to pull data from a previous roster iteration into a calculation or note.
+- `pulldata('csvname', 'column', 'key')` : Pulls data from an external CSV file uploaded to the device. Essential for pre-loading beneficiary lists or site metadata.
 - `once(expression)` : Evaluates the expression only once and stores the result.
 
-## 3. Logic Patterns
+## 3. Advanced ODK Features
+
+### A. Automated Data Capture
+- **Automatic GPS Capture**: Use `geopoint` with the `device` trigger, or set a `calculate` field with `once()` to capture location automatically upon form start.
+- **Background Audio Recording**: Use the `audio` question type. For background recording, ensure the device settings allow the app to record while the screen is off or in the background.
+
+### B. Cascading Selects (Choice Filtering)
+- **Implementation**: Use the `choice_filter` column in the `survey` sheet.
+- **Logic**: `choice_filter = "category_column = ${parent_question}"`.
+- **Custom Columns**: You can add custom columns to the `choices` sheet (e.g., `category`, `region_id`, `status`). These columns are not displayed to the user but can be used in `choice_filter` expressions to dynamically filter the list of available options based on previous answers.
+
+## 4. Logic Patterns
 ### Relevance (`relevant` column)
 - **Simple**: `${age} > 18`
 - **Choice-based**: `selected(${gender}, 'female')`
