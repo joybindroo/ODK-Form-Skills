@@ -1,0 +1,197 @@
+[
+  {
+    "type": "text",
+    "description": "Prompt the user for a text response",
+    "parameters": ""
+  },
+  {
+    "type": "integer",
+    "description": "Prompt the user for an integer response",
+    "parameters": ""
+  },
+  {
+    "type": "decimal",
+    "description": "Prompt the user for a decimal response",
+    "parameters": ""
+  },
+  {
+    "type": "note",
+    "description": "Show the user some text",
+    "parameters": ""
+  },
+  {
+    "type": "calculate",
+    "description": "Record the result of an expression specified in the calculation column",
+    "parameters": ""
+  },
+  {
+    "type": "select_one list_name",
+    "description": "Prompt the user to select one choice out of a list",
+    "parameters": "randomize, seed"
+  },
+  {
+    "type": "select_multiple list_name",
+    "description": "Prompt the user to select multiple choices out of a list",
+    "parameters": "randomize, seed"
+  },
+  {
+    "type": "select_one_from_file file.extension",
+    "description": "Prompt the user to select one choice out of a list of choices from a file",
+    "parameters": "randomize, seed, value, label"
+  },
+  {
+    "type": "select_multiple_from_file file.extension",
+    "description": "Prompt the user to select multiple choices out of a list of choices from a file",
+    "parameters": "randomize, seed, value, label"
+  },
+  {
+    "type": "begin_repeat",
+    "description": "Indicate the start of a group of questions that are repeated",
+    "parameters": ""
+  },
+  {
+    "type": "end_repeat",
+    "description": "Indicate the end of a group of questions that are repeated",
+    "parameters": ""
+  },
+  {
+    "type": "begin_group",
+    "description": "Indicate the start of a group of questions",
+    "parameters": ""
+  },
+  {
+    "type": "end_group",
+    "description": "Indicate the end of a group of questions",
+    "parameters": ""
+  },
+  {
+    "type": "geopoint",
+    "description": "Prompt the user to record a single point (a location)",
+    "parameters": "capture-accuracy, warning-accuracy, allow-mock-accuracy"
+  },
+  {
+    "type": "geotrace",
+    "description": "Prompt the user to record a line of points",
+    "parameters": ""
+  },
+  {
+    "type": "geoshape",
+    "description": "Prompt the user to record a polygon of points (first and last point are identical)",
+    "parameters": ""
+  },
+  {
+    "type": "start-geopoint",
+    "description": "Record the highest-accuracy point within 20 seconds of creating the blank filled form",
+    "parameters": ""
+  },
+  {
+    "type": "range",
+    "description": "Prompt the user to select a value in an integer or decimal range defined in the parameters column",
+    "parameters": "start, end, step"
+  },
+  {
+    "type": "image",
+    "description": "Prompt the user for an image",
+    "parameters": "max-pixels"
+  },
+  {
+    "type": "barcode",
+    "description": "Prompt the user to scan a barcode",
+    "parameters": ""
+  },
+  {
+    "type": "audio",
+    "description": "Prompt the user to record or select audio",
+    "parameters": "quality (normal, low, voice-only, external; defaults to normal)"
+  },
+  {
+    "type": "background-audio",
+    "description": "Record audio in the background while filling out the form",
+    "parameters": "quality (normal, low, voice-only)"
+  },
+  {
+    "type": "video",
+    "description": "Prompt the user to record or select a video",
+    "parameters": ""
+  },
+  {
+    "type": "file",
+    "description": "Prompt the user to attach a file",
+    "parameters": ""
+  },
+  {
+    "type": "date",
+    "description": "Prompt the user for a date response",
+    "parameters": ""
+  },
+  {
+    "type": "time",
+    "description": "Prompt the user for a time response",
+    "parameters": ""
+  },
+  {
+    "type": "datetime",
+    "description": "Prompt the user for a date and time response",
+    "parameters": ""
+  },
+  {
+    "type": "rank",
+    "description": "Prompt the user to rank a list of choices",
+    "parameters": ""
+  },
+  {
+    "type": "csv-external",
+    "description": "Attach a CSV to the form for querying. Specify its name without extension in the name column",
+    "parameters": ""
+  },
+  {
+    "type": "acknowledge",
+    "description": "Prompt the user to acknowledge a statement",
+    "parameters": ""
+  },
+  {
+    "type": "start",
+    "description": "Record the time when the blank filled form is created",
+    "parameters": ""
+  },
+  {
+    "type": "end",
+    "description": "Record the time the last time that the filled form is finalized",
+    "parameters": ""
+  },
+  {
+    "type": "today",
+    "description": "Record the date when the blank filled form is created",
+    "parameters": ""
+  },
+  {
+    "type": "deviceid",
+    "description": "Record the install's unique ID (reset on uninstall or cache clear)",
+    "parameters": ""
+  },
+  {
+    "type": "username",
+    "description": "Record the username",
+    "parameters": ""
+  },
+  {
+    "type": "phonenumber",
+    "description": "Record the phone number stored in app settings",
+    "parameters": ""
+  },
+  {
+    "type": "email",
+    "description": "Record the email stored in app settings",
+    "parameters": ""
+  },
+  {
+    "type": "hidden",
+    "description": "Hidden field that can record the result of a calculation, have a default value, or have no value at all.",
+    "parameters": ""
+  },
+  {
+    "type": "audit",
+    "description": "Log user's actions while filling out the form as an attached CSV",
+    "parameters": "location-priority, location-min-interval, location-max-age, track-changes, track-changes-reasons, identify-user"
+  }
+]
