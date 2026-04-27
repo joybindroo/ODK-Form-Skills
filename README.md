@@ -38,7 +38,8 @@ This framework implements a complete loop from design to insight, specifically t
 - **Agent Persona**: AI agents should initialize using the "Master Programmer" persona in `skills.md`.
 - **Conventions**: Agents must adhere to `conventions/conventions.md` for `snake_case` naming and standardized special values (`-88`, `-89`, `-90`).
 - **Modules**: Agents can inject production-ready blocks from `modules/modules.md` (e.g., Informed Consent, Household Rosters).
-- **File Generation**: Agents use `src/xlsform_generator.py` and `templates/odk_template.xlsx` to produce valid `.xlsx` files.
+- **File Generation**: Agents use `src/xlsform_generator.py` to produce valid `.xlsx` files. 
+    - **Advanced Feature**: The generator now supports **Dynamic Cascading Choice Lists**. By passing a dictionary of choices, the generator automatically detects and creates filter columns (e.g., State $\rightarrow$ District $\rightarrow$ Block) for complex administrative hierarchies.
 - **Validation**: Agents must use the `pyxform` library to validate the `.xlsx` structure and ensure successful XML conversion.
 
 ### 2. Validate $\rightarrow$ `PyXComparer`
