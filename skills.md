@@ -23,7 +23,7 @@ Standardize "missing" or "non-applicable" values to simplify data cleaning:
 - **Constraint Pattern**: For numeric fields allowing special values: `. >= 0 or . = -88 or . = -89 or . = -90`
 
 ### Technical Implementation
-- **Cascading Selects**: Implement hierarchies (e.g., District $\rightarrow$ Block $\rightarrow$ Village) by adding filter columns to the `choices` sheet and using `choice_filter` in the `survey` sheet.
+- **Cascading Selects**: Implement hierarchies (e.g., District -> Block -> Village) by adding filter columns to the `choices` sheet and using `choice_filter` in the `survey` sheet.
 - **Formula Preservation**: When using Python to edit forms, use **XML Patching** (raw text replacement in `xl/worksheets/sheet1.xml`) to prevent libraries like `openpyxl` from stripping `${variable}` syntax in `concat()` or complex calculations.
 - **Data Analysis Alignment**: 
     - Always use integers for `value` in the `choices` sheet.
@@ -64,9 +64,9 @@ Deploy the validated and audited form to ODK Central via `pyODKmcp` or the API.
 ## 5. Reusable Modules (Templates)
 Use these standardized blocks to ensure consistency:
 - **Header & Metadata**: `start`, `end`, `deviceid`, `phonenumber`, `username`, and `calc_duration`.
-- **Informed Consent**: `consent_note` $\rightarrow$ `consent_given` (select_one yesno) $\rightarrow$ `consent_fail` (note).
-- **Household Roster**: `hh_size` $\rightarrow$ `begin_repeat` (`grp_hh_roster`) $\rightarrow$ `mem_name`, `mem_gender`, `mem_age`, `mem_relation`.
-- **Geographic ID**: Cascading selects for `loc_state` $\rightarrow$ `loc_district` $\rightarrow$ `loc_village` and `loc_gps`.
+- **Informed Consent**: `consent_note` -> `consent_given` (select_one yesno) -> `consent_fail` (note).
+- **Household Roster**: `hh_size` -> `begin_repeat` (`grp_hh_roster`) -> `mem_name`, `mem_gender`, `mem_age`, `mem_relation`.
+- **Geographic ID**: Cascading selects for `loc_state` -> `loc_district` -> `loc_village` and `loc_gps`.
 - **Asset Checklist**: `select_multiple assets` $\rightarrow$ `calc_asset_count` using `count-selected()`.
 - **Socio-Economic Profile**: Standardized blocks for Education (`edu_highest_level`, `edu_institution`, etc.) and Employment (`emp_status`, `occ_category`, etc.).
-- **Technical Skills**: `select_multiple tech_skills` $\rightarrow$ Dynamic repeat group `grp_skill_proficiency` to capture proficiency levels and years of experience.
+- **Technical Skills**: `select_multiple tech_skills` -> Dynamic repeat group `grp_skill_proficiency` to capture proficiency levels and years of experience.
