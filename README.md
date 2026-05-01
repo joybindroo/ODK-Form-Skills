@@ -16,10 +16,12 @@ This framework implements a complete loop from design to insight:
 - **Standards**: Adhere to `snake_case` naming and standardized special values (`-88`, `-89`, `-90`).
 - **Generation**: Use `src/xlsform_generator.py` to produce `.xlsx` files.
 - **Advanced Logic**: Implement cascading selects and complex calculations using the patterns in `references/technical_reference.md`.
+- **Formula Preservation**: Use **XML Patching** (raw text replacement in `xl/worksheets/sheet1.xml`) to prevent Python libraries from stripping `${variable}` syntax in formulas.
 
 ### 2. Validate $\rightarrow$ `xls2xform` & `PyXComparer`
 - **Structural Validation**: Use the `xls2xform` CLI tool for the most accurate syntax and structural validation. **Avoid using the `pyxform` Python package for script-based validation.**
 - **Regression Audit**: Use [PyXComparer](https://github.com/joybindroo/PyXComparer) to detect breaking changes between form versions and isolate deltas.
+- **QA Gate**: Review changes in `relevant` and `constraint` columns to ensure no regressions in survey logic.
 
 ### 3. Deploy $\rightarrow$ `ODK Central`
 - **Programmatic Push**: Use `pyODKmcp` or the ODK Central API to deploy validated forms.
@@ -27,10 +29,11 @@ This framework implements a complete loop from design to insight:
 ### 4. Analyze $\rightarrow$ `pyODKmcp` + `pyMCP`
 - **Data Ingestion**: Use `pyODKmcp` to fetch submission data into a local SQLite database.
 - **Natural Language Querying**: Use `pyMCP` to query the database.
+- **Feedback Loop**: Use analysis results to identify patterns or errors and suggest improvements back to the XLSForm design.
 
 ## 📂 Repository Structure
-- `skills.md`: The core operational manual, validation pipeline, and standards.
-- `references/technical_reference.md`: Technical ODK syntax, logic patterns, and implementation pitfalls (e.g., XML patching).
+- `skills.md`: The core operational manual, validation pipeline, and standards (consolidated from archive).
+- `references/technical_reference.md`: Technical ODK syntax, logic patterns, and implementation pitfalls.
 - `src/`: Python scripts for automated XLSForm generation.
 - `templates/`: Standardized ODK Excel templates and schemas.
 - `skills_archive/`: Historical conventions, modules, and tooling documentation.
