@@ -32,12 +32,15 @@ This framework implements a complete loop from design to insight:
 - **Feedback Loop**: Use analysis results to identify patterns or errors and suggest improvements back to the XLSForm design.
 
 ## 📂 Repository Structure
+- `.claude/skills/`: Spec-compliant [Claude Agent Skills](https://docs.claude.com/en/docs/claude-code/skills), one directory per skill (`odk/`, `odk-generate/`, `odk-validate/`, `odk-reference/`), each with a `SKILL.md`. Invoke as `/odk`, `/odk-generate`, etc.
 - `skills.md`: The core operational manual, validation pipeline, and standards (consolidated from archive).
 - `references/technical_reference.md`: Technical ODK syntax, logic patterns, and implementation pitfalls.
 - `src/`: Python scripts for automated XLSForm generation.
 - `templates/`: Standardized ODK Excel templates and schemas.
 - `skills_archive/`: Historical conventions, modules, and tooling documentation.
 - `AGENTS.md`: Project-specific agent behavior and mandates.
+
+> The Claude Code skills in `.claude/skills/` are the recommended entry points — see `.claude/skills/README.md`. An `odk-docs` MCP server (`https://odk-docs.mcp.kapa.ai`) is also wired in for authoritative ODK docs/forum lookups.
 
 ## 🚀 Getting Started for AI Agents
 To activate these skills, an AI agent should:

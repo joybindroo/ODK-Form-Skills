@@ -1,14 +1,16 @@
-# /odk-generate
+---
+name: odk-generate
+description: Generate a production-ready, analysis-ready ODK XLSForm (.xlsx) from survey specifications. Use when the user describes a survey (fields, question types, choice lists, cascading logic, settings) and wants it turned into a valid XLSForm, or when they invoke /odk-generate. Applies snake_case naming conventions, integer choice values, standardized special values, and cascading choice filters via src/xlsform_generator.py.
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep
+---
+
+# odk-generate
 
 Generate a production-ready XLSForm from survey specifications.
 
 ## Usage
 
-```
-/odk-generate
-```
-
-Then provide:
+Invoke the skill, then provide:
 - Survey structure (fields, types, logic)
 - Choice lists (with cascading filters if hierarchical)
 - Form settings (title, ID, version)
@@ -62,3 +64,4 @@ Settings:
 - `references/technical_reference.md` — XPath expressions, advanced patterns
 - `templates/schema.json` — field type schema
 - `src/xlsform_generator.py` — generator source code
+- `odk-docs` MCP server — look up ODK syntax/behavior not covered in the references above

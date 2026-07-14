@@ -1,14 +1,15 @@
-# /odk-reference
+---
+name: odk-reference
+description: Look up ODK Form Skills standards — variable naming conventions, standardized special values, cascading select patterns, reusable form modules, constraint and XPath patterns, and common pitfalls. Use when the user asks how to name variables, which missing-value codes to use, how to build hierarchical choice lists, what reusable modules exist, or invokes /odk-reference. Read-only reference lookup.
+allowed-tools: Read, Glob, Grep
+---
+
+# odk-reference
 
 Access ODK Form Skills standards, naming conventions, and reusable module templates.
 
-## Usage
+## Sections
 
-```
-/odk-reference [section]
-```
-
-Where section is one of:
 - `naming` — Variable naming conventions (snake_case, prefixes, module structure)
 - `special-values` — Standard missing/NA codes (-88, -89, -90, 99)
 - `cascading` — Hierarchical choice list patterns (State → District → Village)
@@ -69,9 +70,5 @@ Standardized blocks available:
 
 ## Learn More
 
-Read the full documentation in `skills.md` for:
-- Complete naming convention guide
-- Special value constraint patterns
-- Validation pipeline steps
-- Analysis workflow (pyODKmcp + database querying)
-- Full module templates with examples
+- Read `skills.md` for the full operational manual.
+- Query the `odk-docs` MCP server (`https://odk-docs.mcp.kapa.ai`) for anything beyond these references — official ODK docs and community forum knowledge.

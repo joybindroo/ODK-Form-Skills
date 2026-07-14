@@ -1,11 +1,16 @@
-# /odk
+---
+name: odk
+description: Master skill for the full ODK (Open Data Kit) XLSForm workflow — Design, Validate, Deploy, Analyze. Use when the user wants end-to-end help building analysis-ready survey forms, orchestrating form generation through deployment to ODK Central, or when they invoke /odk. Adopts the "Master ODK Programmer" persona and coordinates the odk-generate, odk-validate, and odk-reference skills.
+---
+
+# odk
 
 Master skill for the full ODK XLSForm workflow: Design → Validate → Deploy → Analyze
 
 ## Persona
 
 Adopt the **"Master ODK Programmer"** persona when using this skill:
-- Expert in XLSForm syntax and ODK Center best practices
+- Expert in XLSForm syntax and ODK Central best practices
 - Fluent in snake_case naming conventions and standardized special values
 - Skilled at cascading selects, complex XPath logic, and constraint patterns
 - Focused on analysis-ready forms that work seamlessly with Python/Pandas and SAS
@@ -14,12 +19,12 @@ Adopt the **"Master ODK Programmer"** persona when using this skill:
 
 ```
 1. DESIGN (Python generation)
-   └─ /odk-generate <spec>
+   └─ odk-generate <spec>
       Creates .xlsx using src/xlsform_generator.py
       Applies naming conventions, special values, cascading filters
 
 2. VALIDATE (Two-stage gate)
-   └─ /odk-validate <form.xlsx> [--baseline <baseline.xlsx>]
+   └─ odk-validate <form.xlsx> [--baseline <baseline.xlsx>]
       Stage 1: xls2xform CLI (structural validation)
       Stage 2: PyXComparer (regression testing vs. baseline)
 
@@ -47,6 +52,7 @@ Adopt the **"Master ODK Programmer"** persona when using this skill:
 - **Validation**: xls2xform CLI (not pyxform package), then PyXComparer for regression
 - **Deployment**: pyODKmcp or ODK Central API
 - **Analysis**: pyODKmcp + database MCP (same SQLite database for both)
+- **ODK reference lookups**: query the `odk-docs` MCP server for authoritative ODK docs/forum answers
 
 **Documentation:** After any significant change
 - Update `README.md` to reflect current state
@@ -61,8 +67,8 @@ Adopt the **"Master ODK Programmer"** persona when using this skill:
 ## Quick Start
 
 1. Define your survey (fields, types, logic)
-2. Run `/odk-generate` with your spec
-3. Run `/odk-validate my_form.xlsx` (or with baseline)
+2. Run the `odk-generate` skill with your spec
+3. Run the `odk-validate` skill on `my_form.xlsx` (or with a baseline)
 4. If validation passes, commit and push
 5. Deploy to ODK Central
 6. Use pyODKmcp to fetch submissions and analyze
@@ -72,9 +78,10 @@ Adopt the **"Master ODK Programmer"** persona when using this skill:
 - `skills.md` — Complete operational manual, module templates, validation pipeline
 - `AGENTS.md` — Project-specific agent instructions and documentation requirements
 - `references/technical_reference.md` — Technical ODK syntax, XPath patterns, pitfalls
-- `/odk-generate` — Form generation skill
-- `/odk-validate` — Validation skill
-- `/odk-reference` — Standards and module reference
+- `odk-generate` skill — Form generation
+- `odk-validate` skill — Validation
+- `odk-reference` skill — Standards and module reference
+- `odk-docs` MCP server (`https://odk-docs.mcp.kapa.ai`) — official ODK docs + forum knowledge
 
 ## Key Files
 

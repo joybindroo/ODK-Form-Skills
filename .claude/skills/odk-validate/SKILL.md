@@ -1,12 +1,16 @@
-# /odk-validate
+---
+name: odk-validate
+description: Validate an ODK XLSForm with a two-stage pipeline — structural validation via the xls2xform CLI, then optional regression testing against a baseline with PyXComparer. Use when the user has a generated or edited .xlsx form and wants to confirm it is syntactically valid, spec-compliant, and free of unintended logic changes, or when they invoke /odk-validate.
+allowed-tools: Bash, Read, Glob, Grep
+---
+
+# odk-validate
 
 Validate a generated XLSForm using a two-stage pipeline.
 
 ## Usage
 
-```
-/odk-validate <path-to-form.xlsx> [--baseline <baseline-form.xlsx>]
-```
+Provide the path to a form: `<path-to-form.xlsx> [--baseline <baseline-form.xlsx>]`
 
 ## Two-Stage Validation
 
@@ -37,10 +41,10 @@ Validate a generated XLSForm using a two-stage pipeline.
 
 ```bash
 # Basic validation
-/odk-validate my_form.xlsx
+xls2xform my_form.xlsx
 
-# With baseline comparison
-/odk-validate my_form_v2.xlsx --baseline my_form_v1.xlsx
+# With baseline comparison (PyXComparer)
+# compares my_form_v2.xlsx against my_form_v1.xlsx
 ```
 
 ## Reference
@@ -49,3 +53,4 @@ Validate a generated XLSForm using a two-stage pipeline.
 - `references/technical_reference.md` — common pitfalls (formula stripping, XPath errors)
 - `skills_archive/tooling/xlsform_validation.md` — validation tooling details
 - `skills_archive/tooling/pyXcomparer.md` — regression testing guide
+- `odk-docs` MCP server — troubleshoot xls2xform errors against official ODK docs/forum

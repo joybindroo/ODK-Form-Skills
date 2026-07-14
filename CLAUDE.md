@@ -69,13 +69,13 @@ claude mcp add --transport http odk-docs https://odk-docs.mcp.kapa.ai
 
 ## Claude Code Skills
 
-Custom skills live in `.claude/skills/` and are the intended entry points for agent work in this repo:
-- `/odk` — master skill, full Design → Validate → Deploy → Analyze pipeline
-- `/odk-generate` — create an XLSForm from a survey spec
-- `/odk-validate` — run xls2xform + PyXComparer against a form
-- `/odk-reference` — look up standards/naming/reusable modules
+Custom skills live in `.claude/skills/`, one spec-compliant directory per skill (each with a `SKILL.md` carrying `name`/`description` frontmatter). They are the intended entry points for agent work in this repo:
+- `/odk` (`odk/SKILL.md`) — master skill, full Design → Validate → Deploy → Analyze pipeline
+- `/odk-generate` (`odk-generate/SKILL.md`) — create an XLSForm from a survey spec
+- `/odk-validate` (`odk-validate/SKILL.md`) — run xls2xform + PyXComparer against a form
+- `/odk-reference` (`odk-reference/SKILL.md`) — look up standards/naming/reusable modules
 
-Prefer these skills over re-deriving the workflow from scratch when the user's ask matches one of them.
+Skills reference the repo-root knowledge base (`skills.md`, `references/`, `src/`, `templates/`) by relative path rather than duplicating it. Prefer these skills over re-deriving the workflow from scratch when the user's ask matches one of them.
 
 ## Critical Standards
 

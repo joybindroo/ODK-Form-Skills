@@ -1,15 +1,27 @@
 # ODK Form Skills for Claude Code
 
-Custom skills that expose the ODK Form Skills project as Claude Code commands.
+Custom [Agent Skills](https://docs.claude.com/en/docs/claude-code/skills) that expose the ODK Form Skills project as Claude Code commands. Each skill is a spec-compliant directory containing a `SKILL.md` with YAML frontmatter (`name`, `description`, and where relevant `allowed-tools`).
 
 ## Available Skills
 
-| Skill | Purpose |
-|---|---|
-| `/odk` | Master skill — full workflow orchestration (Design → Validate → Deploy → Analyze) |
-| `/odk-generate` | Create XLSForm from survey specifications |
-| `/odk-validate` | Validate forms (xls2xform + PyXComparer) |
-| `/odk-reference` | Access standards, naming conventions, reusable modules |
+| Skill | Directory | Purpose |
+|---|---|---|
+| `/odk` | `odk/SKILL.md` | Master skill — full workflow orchestration (Design → Validate → Deploy → Analyze) |
+| `/odk-generate` | `odk-generate/SKILL.md` | Create XLSForm from survey specifications |
+| `/odk-validate` | `odk-validate/SKILL.md` | Validate forms (xls2xform + PyXComparer) |
+| `/odk-reference` | `odk-reference/SKILL.md` | Access standards, naming conventions, reusable modules |
+
+## Structure
+
+```
+.claude/skills/
+  odk/SKILL.md            # master workflow skill
+  odk-generate/SKILL.md   # form generation
+  odk-validate/SKILL.md   # two-stage validation
+  odk-reference/SKILL.md  # standards & module lookup
+```
+
+Skills reference the repo-root knowledge base (`skills.md`, `references/`, `src/`, `templates/`, `skills_archive/`) by relative path — clone the whole repo to get everything.
 
 ## How to Use
 
@@ -27,7 +39,7 @@ Or use the master skill:
 /odk
 ```
 
-And follow the workflow step-by-step.
+And follow the workflow step-by-step. Skills are also auto-discovered by their `description` frontmatter, so Claude may activate the relevant one when your request matches.
 
 ## Installation
 
