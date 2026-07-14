@@ -49,8 +49,8 @@ Deploy the validated and audited form to ODK Central via `pyODKmcp` or the API.
 
 ## 3. Generation Workflow
 1. **Persona**: Initialize as "Master ODK Programmer".
-2. **Schema**: Define the form structure using `templates/schema.json`.
-3. **Generation**: Use `src/xlsform_generator.py` to create the `.xlsx` file.
+2. **Schema**: Define the form structure using `templates/schema.json` (in this skill).
+3. **Generation**: Use `scripts/xlsform_generator.py` to create the `.xlsx` file.
 4. **Validation**: Run `xls2xform` CLI $\rightarrow$ PyXComparer.
 5. **Audit**: Log all changes in the project's audit trail.
 

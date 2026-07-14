@@ -1,50 +1,94 @@
-# ODK Form Skills for AI Agents
+# ODK Form Skills
 
-This repository is a specialized knowledge base and operational framework designed to empower AI agents—such as **Claude Code, Open Claw, Nanobot, and Open Code**—to act as professional ODK (Open Data Kit) XLSForm Programmers and Data Analysts.
+An agent-agnostic [Agent Skill](https://opencode.ai/docs/skills/) that turns any capable coding-agent CLI into a **Master ODK Programmer** — designing, validating, deploying, and analyzing [ODK](https://getodk.org/) XLSForms that are analysis-ready for **Python (Pandas)** and **SAS**.
 
-## 🎯 Purpose
-The goal of this project is to provide AI agents with the "cognitive tools" to ensure ODK forms are:
-1. **Standardized**: Following strict naming and logic conventions that prevent data corruption.
-2. **Analysis-Ready**: Optimized for seamless data cleaning and analysis in **Python (Pandas)** and **SAS**.
-3. **Fully Agentic**: Structured so that AI assistants can program, validate, deploy, and analyze surveys with minimal human intervention.
+The repo follows the portable `SKILL.md` convention (used by Claude Code, OpenCode, and other agents) — no vendor-specific plugin/marketplace files.
 
-## 🛠️ The End-to-End AI Workflow
-This framework implements a complete loop from design to insight:
+## What you get
 
-### 1. Design -> `ODK-Form-Skills`
-- **Persona**: AI agents should initialize using the **Master ODK Programmer** persona defined in `skills.md`.
-- **Standards**: Adhere to `snake_case` naming and standardized special values (`-88`, `-89`, `-90`).
-- **Generation**: Use `src/xlsform_generator.py` to produce `.xlsx` files.
-- **Advanced Logic**: Implement cascading selects and complex calculations using the patterns in `references/technical_reference.md`.
-- **Formula Preservation**: Use **XML Patching** (raw text replacement in `xl/worksheets/sheet1.xml`) to prevent Python libraries from stripping `${variable}` syntax in formulas.
+The `odk-xlsform` skill packages an end-to-end workflow:
 
-### 2. Validate -> `xls2xform` & `PyXComparer`
-- **Structural Validation**: Use the `xls2xform` CLI tool for the most accurate syntax and structural validation. **Avoid using the `pyxform` Python package for script-based validation.**
-- **Regression Audit**: Use [PyXComparer](https://github.com/joybindroo/PyXComparer) to detect breaking changes between form versions and isolate deltas.
-- **QA Gate**: Review changes in `relevant` and `constraint` columns to ensure no regressions in survey logic.
+```
+Design → Validate → Deploy → Analyze
+```
 
-### 3. Deploy -> `ODK Central`
-- **Programmatic Push**: Use `pyODKmcp` or the ODK Central API to deploy validated forms.
+- **Design** — generate valid `.xlsx` forms from a spec, with the house style baked in (snake_case naming, integer choices, standardized special values, cascading selects).
+- **Validate** — structural gate via the `xls2xform` CLI, plus optional regression checks with [PyXComparer](https://github.com/joybindroo/PyXComparer).
+- **Deploy** — push to ODK Central via `pyODKmcp` or the API.
+- **Analyze** — pull submissions into SQLite and query with SQL, feeding results back into the form design.
 
-### 4. Analyze -> `pyODKmcp` + `pyMCP`
-- **Data Ingestion**: Use `pyODKmcp` to fetch submission data into a local SQLite database.
-- **Natural Language Querying**: Use `pyMCP` to query the database.
-- **Feedback Loop**: Use analysis results to identify patterns or errors and suggest improvements back to the XLSForm design.
+## Repository structure
 
-## 📂 Repository Structure
-- `.claude/skills/`: Spec-compliant [Claude Agent Skills](https://docs.claude.com/en/docs/claude-code/skills), one directory per skill (`odk/`, `odk-generate/`, `odk-validate/`, `odk-reference/`), each with a `SKILL.md`. Invoke as `/odk`, `/odk-generate`, etc.
-- `skills.md`: The core operational manual, validation pipeline, and standards (consolidated from archive).
-- `references/technical_reference.md`: Technical ODK syntax, logic patterns, and implementation pitfalls.
-- `src/`: Python scripts for automated XLSForm generation.
-- `templates/`: Standardized ODK Excel templates and schemas.
-- `skills_archive/`: Historical conventions, modules, and tooling documentation.
-- `AGENTS.md`: Project-specific agent behavior and mandates.
+```
+skills/
+  odk-xlsform/
+    SKILL.md                      # skill entry point (workflow, house style, mandates)
+    manual.md                     # operational manual (conventions, modules, pipeline)
+    reference.md                  # technical ODK reference (syntax, XPath, pitfalls)
+    scripts/xlsform_generator.py  # XLSForm generation engine
+    templates/                    # base .xlsx template + schema/field-type JSON
+requirements.txt                  # openpyxl, pandas, pyxform, pyodk
+```
 
-> The Claude Code skills in `.claude/skills/` are the recommended entry points — see `.claude/skills/README.md`. An `odk-docs` MCP server (`https://odk-docs.mcp.kapa.ai`) is also wired in for authoritative ODK docs/forum lookups.
+## Using the skill
 
-## 🚀 Getting Started for AI Agents
-To activate these skills, an AI agent should:
-1. Read `skills.md` to adopt the **Master ODK Programmer** persona and understand the validation pipeline.
-2. Reference `references/technical_reference.md` for technical syntax and "pitfalls" (like formula stripping).
-3. Use `src/xlsform_generator.py` to output the final form.
-4. Validate the output using the `xls2xform` CLI, followed by `PyXComparer`.
+Each agent discovers `SKILL.md` skills from its own directories. Point your agent at this skill by cloning it into a discovery path (or symlinking `skills/odk-xlsform` there):
+
+**Claude Code** — `~/.claude/skills/odk-xlsform/` (global) or `.claude/skills/odk-xlsform/` (per-project)
+
+**OpenCode** — `~/.config/opencode/skills/odk-xlsform/` (global) or `.opencode/skills/odk-xlsform/`, `.claude/skills/odk-xlsform/`, or `.agents/skills/odk-xlsform/` (per-project)
+
+**Other agents** — drop `odk-xlsform/` into whatever directory your CLI scans for `SKILL.md` skills.
+
+Example (Claude Code, global):
+
+```bash
+git clone https://github.com/joybindroo/ODK-Form-Skills /tmp/odk
+cp -r /tmp/odk/skills/odk-xlsform ~/.claude/skills/
+```
+
+Once discovered, the skill activates automatically when you ask to build, validate, or analyze an ODK/XLSForm survey.
+
+## ODK docs MCP (optional but recommended)
+
+The skill can consult the **`odk-docs`** MCP server for authoritative ODK documentation and community-forum knowledge:
+
+- Endpoint: `https://odk-docs.mcp.kapa.ai` (HTTP transport)
+
+Register it however your agent configures MCP servers:
+
+**Claude Code**
+```bash
+claude mcp add --transport http odk-docs https://odk-docs.mcp.kapa.ai
+```
+
+**OpenCode** — in `opencode.json`:
+```json
+{
+  "mcp": {
+    "odk-docs": { "type": "remote", "url": "https://odk-docs.mcp.kapa.ai", "enabled": true }
+  }
+}
+```
+
+Any MCP-compatible agent can connect to the same endpoint directly.
+
+## Requirements
+
+```bash
+pip install -r requirements.txt   # openpyxl, pandas, pyxform, pyodk
+```
+
+- `xls2xform` (ships with `pyxform`) for validation — use the **CLI**, not the Python package.
+- Optional: [PyXComparer](https://github.com/joybindroo/PyXComparer) for regression testing; `pyODKmcp` for ODK Central integration.
+
+## Standards at a glance
+
+| | |
+|---|---|
+| **Naming** | `snake_case` with module prefix (`demog_*`, `hh_*`, `agri_*`); `grp_*`, `calc_*` |
+| **Special values** | `-88` don't know, `-89` refused, `-90` N/A, `99` other |
+| **Choices** | integer values; `1`/`0` for yes/no; cascading via `choice_filter` |
+| **Validation** | `xls2xform` CLI → PyXComparer regression |
+
+See `skills/odk-xlsform/manual.md` and `skills/odk-xlsform/reference.md` for the full detail.
