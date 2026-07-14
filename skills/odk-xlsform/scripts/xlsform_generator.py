@@ -20,7 +20,7 @@ def extract_template_metadata(template_path):
         for sheet in target_sheets:
             if sheet in wb.sheetnames:
                 ws = wb[sheet]
-                headers = [cell.value for cell in next(ws.iter_rows(min_row=1, max_row=1, values_only=True))[0]]
+                headers = [h for h in next(ws.iter_rows(min_row=1, max_row=1, values_only=True)) if h is not None]
                 metadata[sheet] = headers
         return metadata
     except Exception as e:
