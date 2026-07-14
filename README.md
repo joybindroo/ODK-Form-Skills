@@ -27,7 +27,7 @@ skills/
     reference.md                  # technical ODK reference (syntax, XPath, pitfalls)
     scripts/xlsform_generator.py  # XLSForm generation engine
     templates/                    # base .xlsx template + schema/field-type JSON
-requirements.txt                  # openpyxl, pandas, pyxform, pyodk
+    requirements.txt              # openpyxl, pandas, pyxform, pyodk
 ```
 
 ## Using the skill
@@ -76,7 +76,7 @@ Any MCP-compatible agent can connect to the same endpoint directly.
 ## Requirements
 
 ```bash
-pip install -r requirements.txt   # openpyxl, pandas, pyxform, pyodk
+pip install -r skills/odk-xlsform/requirements.txt   # openpyxl, pandas, pyxform, pyodk
 ```
 
 - `xls2xform` (ships with `pyxform`) for validation — use the **CLI**, not the Python package.

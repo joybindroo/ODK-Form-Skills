@@ -34,7 +34,7 @@ Design → Validate → Deploy → Analyze
 - `extract_template_metadata(template_path)` — reads the column headers from `templates/odk_template.xlsx` so you know the exact schema before generating.
 - `generate_xlsform(output_path, survey_data, choices_data, settings_data, template_path=None)` — writes the workbook. `choices_data` accepts either the **advanced dict** form `{list_name: [{'name','label', ...filter_cols}, ...]}` (auto-derives filter columns for cascading selects) or a legacy flat list of rows.
 
-Requires `pip install -r requirements.txt` (openpyxl, pandas, pyxform, pyodk).
+Requires `pip install -r requirements.txt` (openpyxl, pandas, pyxform, pyodk) — `requirements.txt` sits in this skill directory, alongside `SKILL.md`.
 
 ⚠️ **Formula-stripping pitfall**: openpyxl/pandas can strip `${variable}` syntax out of formula cells on save. When editing forms with Python, use **XML patching** — unzip the `.xlsx`, raw-text-replace the broken formula back into `xl/worksheets/sheet1.xml`, rezip. Details in `reference.md` §5A.
 
@@ -44,6 +44,7 @@ Requires `pip install -r requirements.txt` (openpyxl, pandas, pyxform, pyodk).
 |---|---|
 | `manual.md` | Full operational manual — naming, special values, validation pipeline, reusable module templates (consent, household roster, geographic ID, assets, socio-economic, skills) |
 | `reference.md` | Technical ODK reference — question types, operators/functions, cascading selects, audit logs, logic patterns, implementation pitfalls |
+| `requirements.txt` | Python deps (openpyxl, pandas, pyxform, pyodk) |
 | `scripts/xlsform_generator.py` | XLSForm generation engine |
 | `templates/odk_template.xlsx` | Base template (source of truth for column order) |
 | `templates/schema.json`, `templates/field_types.json` | Column schema and supported field types |
